@@ -5,22 +5,26 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,101 +32,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.whatsappui.ui.theme.WhatsappUITheme
 
-// ------------------------------------------------------------
-// VARIABLES GLOBALES (se conservan dentro de este archivo
-// para que puedas reemplazar directamente tu InfoActivity.kt)
-// ------------------------------------------------------------
-val WaGreen = Color(0xFF008069)
-val WaGreenLight = Color(0xFF25D366)
-val WaBubbleOut = Color(0xFFD9FDD3)
-val WaBubbleIn = Color(0xFFFFFFFF)
-val WaChatBackground = Color(0xFFEFEAE2)
-val WaTextPrimary = Color(0xFF111B21)
-val WaTextSecondary = Color(0xFF667781)
-val WaTickBlue = Color(0xFF53BDEB)
-val WaRed = Color(0xFFEA0038)
+private val WaGreen = Color(0xFF008069)
+private val WaBackground = Color(0xFFF0F2F5)
+private val WaTextPrimary = Color(0xFF111B21)
+private val WaTextSecondary = Color(0xFF667781)
+private val WaDivider = Color(0xFFE9EDEF)
+private val WaRed = Color(0xFFD70040)
 
-private val WaDivider = Color(0xFFE7E9E9)
-
-object WaDimens {
-    val SpaceXs = 4.dp
-    val SpaceSm = 8.dp
-    val SpaceMd = 16.dp
-    val SpaceLg = 24.dp
-    val SpaceXl = 32.dp
-    val AvatarSmall = 40.dp
-    val AvatarMedium = 52.dp
-    val AvatarLarge = 120.dp
-    val IconSize = 24.dp
-    val ButtonHeight = 48.dp
-    val ScreenPadding = 16.dp
-    val RadiusSmall = 8.dp
-    val RadiusMedium = 16.dp
-    val RadiusLarge = 24.dp
-}
-
-object WaTextSizes {
-    val Small = 12.sp
-    val Body = 14.sp
-    val Subtitle = 16.sp
-    val Title = 20.sp
-    val Heading = 24.sp
-}
-
-val AppTypography = Typography(
-    bodySmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = WaTextSizes.Small,
-        lineHeight = 16.sp
-    ),
-    bodyMedium = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = WaTextSizes.Body,
-        lineHeight = 20.sp
-    ),
-    bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = WaTextSizes.Subtitle,
-        lineHeight = 24.sp
-    ),
-    titleMedium = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.SemiBold,
-        fontSize = WaTextSizes.Subtitle,
-        lineHeight = 24.sp
-    ),
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Bold,
-        fontSize = WaTextSizes.Title,
-        lineHeight = 28.sp
-    ),
-    headlineSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Bold,
-        fontSize = WaTextSizes.Heading,
-        lineHeight = 32.sp
-    ),
-    labelLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = WaTextSizes.Body,
-        lineHeight = 20.sp
-    )
-)
-
-val AppShapes = Shapes(
-    small = RoundedCornerShape(WaDimens.RadiusSmall),
-    medium = RoundedCornerShape(WaDimens.RadiusMedium),
-    large = RoundedCornerShape(WaDimens.RadiusLarge)
-)
-
-// ------------------------------------------------------------
-// ACTIVIDAD: se ve igual al ejecutar y en @Preview
-// ------------------------------------------------------------
 class InfoActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,9 +47,10 @@ class InfoActivity : ComponentActivity() {
             WhatsappUITheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    containerColor = WaChatBackground
+                    containerColor = WaBackground
                 ) { innerPadding ->
                     PantallaInfoContacto(
+                        onBack = ::finish,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -143,320 +60,181 @@ class InfoActivity : ComponentActivity() {
 }
 
 @Composable
-fun PantallaInfoContacto(modifier: Modifier = Modifier) {
+fun PantallaInfoContacto(
+    modifier: Modifier = Modifier,
+    onBack: () -> Unit = {}
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(WaChatBackground)
+            .background(WaBackground)
             .verticalScroll(rememberScrollState())
     ) {
-        BarraSuperior()
-        CabeceraContacto()
+        CabeceraContacto(onBack)
         AccionesContacto()
-        Spacer(Modifier.height(WaDimens.SpaceMd))
-        TarjetaEstado()
-        Spacer(Modifier.height(WaDimens.SpaceSm))
-        TarjetaMultimedia()
-        Spacer(Modifier.height(WaDimens.SpaceSm))
-        TarjetaAjustes()
-        Spacer(Modifier.height(WaDimens.SpaceSm))
-        TarjetaGrupos()
-        Spacer(Modifier.height(WaDimens.SpaceSm))
-        TarjetaPeligro()
-        Spacer(Modifier.height(WaDimens.SpaceXl))
-    }
-}
-
-// ------------------------------------------------------------
-// CABECERA
-// ------------------------------------------------------------
-@Composable
-fun BarraSuperior(modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(Color.White)
-            .height(56.dp)
-            .padding(horizontal = WaDimens.SpaceXs),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IconButton(onClick = { /* Solo interfaz */ }) {
-            IconoFlecha()
-        }
-        Text(
-            text = "Información del contacto",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = WaTextPrimary,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.weight(1f)
-        )
-        IconButton(onClick = { /* Solo interfaz */ }) {
-            IconoTresPuntos()
-        }
+        SeparacionSeccion()
+        FilaMultimedia()
+        SeparacionSeccion()
+        SeccionAjustesPrincipales()
+        SeparacionSeccion()
+        SeccionPrivacidad()
+        SeparacionSeccion()
+        SeccionFavoritos()
+        SeparacionSeccion()
+        SeccionGrupos()
+        SeparacionSeccion()
+        SeccionPeligro()
+        Spacer(Modifier.height(32.dp))
     }
 }
 
 @Composable
-fun CabeceraContacto() {
+private fun CabeceraContacto(onBack: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White)
-            .padding(top = 22.dp, bottom = 20.dp),
+            .padding(bottom = 22.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Avatar temporal. Luego puedes sustituirlo por una Image.
-        Box(
+        Row(
             modifier = Modifier
-                .size(WaDimens.AvatarLarge)
-                .clip(CircleShape)
-                .background(WaGreen.copy(alpha = 0.15f)),
-            contentAlignment = Alignment.Center
+                .fillMaxWidth()
+                .height(56.dp)
+                .padding(horizontal = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "MG",
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Medium,
-                color = WaGreen
-            )
+            IconButton(onClick = onBack) {
+                Icon(
+                    painter = painterResource(R.drawable.arrow_back),
+                    contentDescription = "Volver",
+                    tint = WaTextPrimary,
+                    modifier = Modifier.size(28.dp)
+                )
+            }
+            Spacer(Modifier.weight(1f))
+            IconButton(onClick = {}) {
+                Icon(
+                    painter = painterResource(R.drawable.more_vert),
+                    contentDescription = "Más opciones",
+                    tint = WaTextPrimary,
+                    modifier = Modifier.size(28.dp)
+                )
+            }
         }
-        Spacer(Modifier.height(WaDimens.SpaceMd))
+
+        Image(
+            painter = painterResource(R.drawable.pfp),
+            contentDescription = "Foto de perfil de María González",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(132.dp)
+                .clip(CircleShape)
+        )
+        Spacer(Modifier.height(14.dp))
         Text(
             text = "María González",
-            fontSize = WaTextSizes.Heading,
-            fontWeight = FontWeight.Bold,
-            color = WaTextPrimary
+            color = WaTextPrimary,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Normal,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(3.dp))
         Text(
             text = "+591 7123 4567",
-            fontSize = WaTextSizes.Subtitle,
-            color = WaTextSecondary
+            color = WaTextSecondary,
+            fontSize = 16.sp
         )
     }
 }
 
 @Composable
-fun AccionesContacto() {
+private fun AccionesContacto() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White)
-            .padding(start = WaDimens.SpaceMd, end = WaDimens.SpaceMd, bottom = 18.dp),
-        horizontalArrangement = Arrangement.spacedBy(WaDimens.SpaceSm)
+            .padding(bottom = 18.dp),
+        horizontalArrangement = Arrangement.spacedBy(28.dp, Alignment.CenterHorizontally)
     ) {
-        BotonAccion(
-            icono = R.drawable.call,
-            titulo = "Llamar",
-            modifier = Modifier.weight(1f)
-        )
-        BotonAccion(
-            icono = R.drawable.videocam,
-            titulo = "Video",
-            modifier = Modifier.weight(1f)
-        )
-        BotonAccion(
-            icono = R.drawable.search,
-            titulo = "Buscar",
-            modifier = Modifier.weight(1f)
-        )
+        BotonAccion(R.drawable.call, "Voz")
+        BotonAccion(R.drawable.videocam, "Video")
+        BotonAccion(R.drawable.search, "Buscar")
     }
 }
 
 @Composable
-fun BotonAccion(icono: Int, titulo: String, modifier: Modifier = Modifier) {
-    OutlinedButton(
-        onClick = { /* Sin funcionalidad por ahora */ },
-        modifier = modifier.height(76.dp),
-        shape = RoundedCornerShape(WaDimens.RadiusMedium),
-        border = BorderStroke(1.dp, WaDivider),
-        contentPadding = PaddingValues(0.dp),
-        colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White)
+private fun BotonAccion(icono: Int, titulo: String) {
+    Column(
+        modifier = Modifier.width(62.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        OutlinedButton(
+            onClick = {},
+            modifier = Modifier.size(58.dp),
+            shape = CircleShape,
+            border = BorderStroke(1.dp, WaDivider),
+            contentPadding = PaddingValues(0.dp),
+            colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White)
+        ) {
             Icon(
                 painter = painterResource(icono),
                 contentDescription = titulo,
                 tint = WaGreen,
                 modifier = Modifier.size(25.dp)
             )
-            Spacer(Modifier.height(5.dp))
-            Text(
-                text = titulo,
-                color = WaGreen,
-                fontSize = 13.sp,
-                maxLines = 1
-            )
         }
+        Spacer(Modifier.height(6.dp))
+        Text(
+            text = titulo,
+            color = WaGreen,
+            fontSize = 13.sp,
+            maxLines = 1
+        )
     }
 }
 
-// ------------------------------------------------------------
-// TARJETAS DE INFORMACIÓN
-// ------------------------------------------------------------
 @Composable
-fun TarjetaBase(content: @Composable ColumnScope.() -> Unit) {
-    Surface(
+private fun FilaMultimedia() {
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = WaDimens.SpaceSm),
-        shape = RoundedCornerShape(WaDimens.RadiusMedium),
-        color = Color.White
+            .background(Color.White)
+            .padding(vertical = 18.dp)
     ) {
-        Column(content = content)
-    }
-}
-
-@Composable
-fun TarjetaEstado() {
-    TarjetaBase {
-        Column(Modifier.padding(WaDimens.SpaceMd)) {
-            Text(
-                text = "Info.",
-                fontSize = WaTextSizes.Body,
-                color = WaGreen,
-                fontWeight = FontWeight.Medium
-            )
-            Spacer(Modifier.height(WaDimens.SpaceSm))
-            Text(
-                text = "¡Hola! Estoy usando esta aplicación.",
-                fontSize = WaTextSizes.Subtitle,
-                color = WaTextPrimary
-            )
-            Spacer(Modifier.height(6.dp))
-            Text(
-                text = "12 de noviembre de 2026",
-                fontSize = WaTextSizes.Small,
-                color = WaTextSecondary
-            )
-        }
-    }
-}
-
-@Composable
-fun TarjetaMultimedia() {
-    TarjetaBase {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(WaDimens.SpaceMd),
+            modifier = Modifier.padding(horizontal = 24.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = "Archivos, enlaces y documentos",
                 color = WaTextPrimary,
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Medium,
+                fontSize = 16.sp,
                 modifier = Modifier.weight(1f)
             )
-            Text("12", color = WaTextSecondary, fontSize = WaTextSizes.Body)
-            Spacer(Modifier.width(4.dp))
+            Text(text = "7", color = WaTextSecondary, fontSize = 14.sp)
+            Spacer(Modifier.width(8.dp))
             Icon(
                 painter = painterResource(R.drawable.chevron_right),
-                contentDescription = null,
+                contentDescription = "Abrir archivos compartidos",
                 tint = WaTextSecondary,
                 modifier = Modifier.size(20.dp)
             )
         }
-        Row(
-            modifier = Modifier
-                .horizontalScroll(rememberScrollState())
-                .padding(start = WaDimens.SpaceMd, end = WaDimens.SpaceMd, bottom = WaDimens.SpaceMd),
-            horizontalArrangement = Arrangement.spacedBy(WaDimens.SpaceSm)
+        Spacer(Modifier.height(14.dp))
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 24.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Miniatura(R.drawable.pfp, Color(0xFFE3F2EF))
-            Miniatura(R.drawable.pfp, Color(0xFFDEEBF6))
-            Miniatura(R.drawable.description, Color(0xFFF9E8DB))
-            Miniatura(R.drawable.link_2, Color(0xFFEAE6F4))
-        }
-    }
-}
-
-@Composable
-fun Miniatura(icono: Int, colorFondo: Color) {
-    Box(
-        modifier = Modifier
-            .size(78.dp)
-            .clip(RoundedCornerShape(WaDimens.RadiusSmall))
-            .background(colorFondo),
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(
-            painter = painterResource(icono),
-            contentDescription = null,
-            tint = WaGreen,
-            modifier = Modifier.size(30.dp)
-        )
-    }
-}
-
-// ------------------------------------------------------------
-// OPCIONES DEL CONTACTO
-// ------------------------------------------------------------
-@Composable
-fun TarjetaAjustes() {
-    TarjetaBase {
-        OpcionInfo(
-            icono = R.drawable.notifications,
-            titulo = "Notificaciones",
-            subtitulo = "Predeterminadas"
-        )
-        Separador()
-        OpcionInfo(
-            icono = R.drawable.image,
-            titulo = "Visibilidad de archivos",
-            subtitulo = "Predeterminada"
-        )
-        Separador()
-        OpcionInfo(
-            icono = R.drawable.lock,
-            titulo = "Cifrado",
-            subtitulo = "Los mensajes y las llamadas están cifrados"
-        )
-        Separador()
-        OpcionInfo(
-            icono = R.drawable.avg_pace,
-            titulo = "Mensajes temporales",
-            subtitulo = "Desactivados"
-        )
-    }
-}
-
-@Composable
-fun OpcionInfo(
-    icono: Int,
-    titulo: String,
-    subtitulo: String? = null,
-    peligro: Boolean = false
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = WaDimens.SpaceMd, vertical = 15.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            painter = painterResource(icono),
-            contentDescription = null,
-            tint = if (peligro) WaRed else WaTextSecondary,
-            modifier = Modifier.size(WaDimens.IconSize)
-        )
-        Spacer(Modifier.width(24.dp))
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = titulo,
-                color = if (peligro) WaRed else WaTextPrimary,
-                fontSize = WaTextSizes.Subtitle,
-                fontWeight = FontWeight.Normal
-            )
-            if (subtitulo != null) {
-                Spacer(Modifier.height(3.dp))
-                Text(
-                    text = subtitulo,
-                    color = WaTextSecondary,
-                    fontSize = WaTextSizes.Body
+            items(5) { index ->
+                Image(
+                    painter = painterResource(R.drawable.pfp),
+                    contentDescription = "Archivo compartido ${index + 1}",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(width = 96.dp, height = 88.dp)
+                        .clip(RoundedCornerShape(8.dp))
                 )
             }
         }
@@ -464,120 +242,192 @@ fun OpcionInfo(
 }
 
 @Composable
-fun Separador() {
-    HorizontalDivider(
-        modifier = Modifier.padding(start = 64.dp),
-        color = WaDivider,
-        thickness = 1.dp
-    )
-}
-
-// ------------------------------------------------------------
-// GRUPOS EN COMÚN
-// ------------------------------------------------------------
-@Composable
-fun TarjetaGrupos() {
-    TarjetaBase {
-        Text(
-            text = "Grupos en común · 3",
-            color = WaGreen,
-            fontSize = WaTextSizes.Body,
-            fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(WaDimens.SpaceMd)
-        )
-        GrupoComun("FA", "Familia", "8 participantes", Color(0xFFD8EEE6))
-        Separador()
-        GrupoComun("AU", "Amigos de la universidad", "12 participantes", Color(0xFFFFECD4))
-        Separador()
-        GrupoComun("TR", "Trabajo", "6 participantes", Color(0xFFE3E8FF))
+private fun SeccionAjustesPrincipales() {
+    Column(Modifier.background(Color.White)) {
+        OpcionInfo(R.drawable.image, "Administrar almacenamiento", "1,6 MB")
+        OpcionInfo(R.drawable.image, "Visibilidad de archivos", "Predeterminada")
+        OpcionInfo(R.drawable.notifications, "Notificaciones", "Predeterminadas")
     }
 }
 
 @Composable
-fun GrupoComun(iniciales: String, nombre: String, detalle: String, fondo: Color) {
+private fun SeccionPrivacidad() {
+    Column(Modifier.background(Color.White)) {
+        OpcionInfo(R.drawable.avg_pace, "Mensajes temporales", "Desactivados")
+        OpcionInfo(
+            icono = R.drawable.lock,
+            titulo = "Bloqueo de chat",
+            subtitulo = "Bloquea y oculta este chat en este dispositivo.",
+            control = { SwitchWhatsApp() }
+        )
+        OpcionInfo(R.drawable.block, "Chat restringido", "Desactivado")
+        OpcionInfo(
+            R.drawable.link_2,
+            "Cifrado",
+            "Los mensajes y las llamadas están cifrados"
+        )
+        OpcionInfo(
+            icono = R.drawable.chat_info,
+            titulo = "Traducir mensajes",
+            subtitulo = "Desactivado",
+            control = { SwitchWhatsApp() }
+        )
+    }
+}
+
+@Composable
+private fun SeccionFavoritos() {
+    Column(Modifier.background(Color.White)) {
+        OpcionInfo(R.drawable.thumb_down, "Eliminar de Favoritos")
+    }
+}
+
+@Composable
+private fun SeccionGrupos() {
+    val grupos = listOf(
+        Triple("FA", "Familia", "8 participantes"),
+        Triple("AU", "Amigos de la universidad", "12 participantes"),
+        Triple("TR", "Trabajo", "6 participantes"),
+        Triple("FU", "Fútbol del domingo", "10 participantes"),
+        Triple("VE", "Vecinos", "18 participantes")
+    )
+    var expandido by rememberSaveable { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+            .padding(vertical = 8.dp)
+    ) {
+        Text(
+            text = "${grupos.size} grupos en común",
+            color = WaGreen,
+            fontSize = 14.sp,
+            modifier = Modifier.padding(horizontal = 24.dp, vertical = 10.dp)
+        )
+        (if (expandido) grupos else grupos.take(3)).forEach { (iniciales, nombre, detalle) ->
+            GrupoComun(iniciales, nombre, detalle)
+        }
+        TextButton(
+            onClick = { expandido = !expandido },
+            modifier = Modifier
+                .align(Alignment.Start)
+                .padding(start = 68.dp)
+        ) {
+            Text(
+                text = if (expandido) "Ver menos" else "Ver ${grupos.size - 3} grupos más",
+                color = WaGreen
+            )
+        }
+    }
+}
+
+@Composable
+private fun GrupoComun(iniciales: String, nombre: String, detalle: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = WaDimens.SpaceMd, vertical = 10.dp),
+            .padding(horizontal = 24.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
             modifier = Modifier
-                .size(WaDimens.AvatarMedium)
+                .size(48.dp)
                 .clip(CircleShape)
-                .background(fondo),
+                .background(Color(0xFFD9FDD3)),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = iniciales,
                 color = WaGreen,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
+                fontWeight = FontWeight.SemiBold
             )
         }
-        Spacer(Modifier.width(14.dp))
+        Spacer(Modifier.width(16.dp))
         Column {
-            Text(
-                text = nombre,
-                color = WaTextPrimary,
-                fontSize = WaTextSizes.Subtitle,
-                fontWeight = FontWeight.Medium
-            )
-            Text(
-                text = detalle,
-                color = WaTextSecondary,
-                fontSize = WaTextSizes.Body
-            )
+            Text(text = nombre, color = WaTextPrimary, fontSize = 16.sp)
+            Text(text = detalle, color = WaTextSecondary, fontSize = 14.sp)
         }
     }
 }
 
-// ------------------------------------------------------------
-// OPCIONES EN ROJO
-// ------------------------------------------------------------
 @Composable
-fun TarjetaPeligro() {
-    TarjetaBase {
-        OpcionInfo(
-            icono = R.drawable.block,
-            titulo = "Bloquear",
-            peligro = true
-        )
-        Separador()
-        OpcionInfo(
-            icono = R.drawable.thumb_down,
-            titulo = "Reportar",
-            peligro = true
-        )
+private fun SeccionPeligro() {
+    Column(Modifier.background(Color.White)) {
+        OpcionInfo(R.drawable.block, "Bloquear a María", peligro = true)
+        OpcionInfo(R.drawable.thumb_down, "Reportar a María", peligro = true)
+        OpcionInfo(R.drawable.block, "Vaciar chat", peligro = true)
     }
 }
 
-// ------------------------------------------------------------
-// ÍCONOS YA REFERENCIADOS EN TU CÓDIGO
-// ------------------------------------------------------------
 @Composable
-fun IconoFlecha() {
-    Icon(
-        painter = painterResource(R.drawable.arrow_back),
-        contentDescription = "Volver",
-        tint = WaTextPrimary,
-        modifier = Modifier.size(28.dp)
+private fun OpcionInfo(
+    icono: Int,
+    titulo: String,
+    subtitulo: String? = null,
+    peligro: Boolean = false,
+    control: (@Composable () -> Unit)? = null
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 24.dp, end = 20.dp, top = 17.dp, bottom = 17.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            painter = painterResource(icono),
+            contentDescription = null,
+            tint = if (peligro) WaRed else WaTextSecondary,
+            modifier = Modifier.size(25.dp)
+        )
+        Spacer(Modifier.width(28.dp))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = titulo,
+                color = if (peligro) WaRed else WaTextPrimary,
+                fontSize = 16.sp,
+                lineHeight = 20.sp
+            )
+            if (subtitulo != null) {
+                Spacer(Modifier.height(2.dp))
+                Text(
+                    text = subtitulo,
+                    color = WaTextSecondary,
+                    fontSize = 14.sp,
+                    lineHeight = 18.sp
+                )
+            }
+        }
+        if (control != null) {
+            Spacer(Modifier.width(12.dp))
+            control()
+        }
+    }
+}
+
+@Composable
+private fun SwitchWhatsApp() {
+    Switch(
+        checked = false,
+        onCheckedChange = {},
+        colors = SwitchDefaults.colors(
+            checkedThumbColor = Color.White,
+            checkedTrackColor = WaGreen,
+            uncheckedThumbColor = Color.White,
+            uncheckedTrackColor = Color(0xFF9DA5A8),
+            uncheckedBorderColor = Color(0xFF9DA5A8)
+        )
     )
 }
 
 @Composable
-fun IconoTresPuntos() {
-    Icon(
-        painter = painterResource(R.drawable.more_vert),
-        contentDescription = "Más opciones",
-        tint = WaTextPrimary,
-        modifier = Modifier.size(28.dp)
-    )
+private fun SeparacionSeccion() {
+    HorizontalDivider(color = WaDivider, thickness = 8.dp)
 }
 
 @Preview(showBackground = true, widthDp = 393, heightDp = 852)
 @Composable
-fun InfoContactoPreview() {
+private fun InfoContactoPreview() {
     WhatsappUITheme {
         PantallaInfoContacto()
     }
