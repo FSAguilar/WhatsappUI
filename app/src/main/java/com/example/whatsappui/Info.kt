@@ -42,6 +42,6 @@ fun Greetingg(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetinggPreview() {
     WhatsappUITheme {
-        Greeting("Android")
+        Greetingg("Android")
     }
 }

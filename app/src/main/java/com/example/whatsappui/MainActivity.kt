@@ -4,13 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.whatsappui.ui.calls.CallsNavigationContainer
+import com.example.whatsappui.ui.calls.screens.CallInfoScreen
+import com.example.whatsappui.ui.calls.screens.CallsMainScreen
+import com.example.whatsappui.ui.calls.screens.DialpadScreen
+import com.example.whatsappui.ui.calls.screens.ScheduleCallScreen
+import com.example.whatsappui.ui.calls.screens.SelectContactScreen
 import com.example.whatsappui.ui.theme.WhatsappUITheme
 
 class MainActivity : ComponentActivity() {
@@ -19,29 +20,48 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             WhatsappUITheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                CallsNavigationContainer()
             }
         }
     }
 }
 
+@Preview(showBackground = true)
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun CallsAppMainPreview() {
+    WhatsappUITheme {
+        CallsMainScreen()
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun CallInfoScreenPreview() {
     WhatsappUITheme {
-        Greeting("Android")
+        CallInfoScreen()
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ScheduleCallScreenPreview() {
+    WhatsappUITheme {
+        ScheduleCallScreen()
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DialpadScreenPreview() {
+    WhatsappUITheme {
+        DialpadScreen()
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SelectContactScreenPreview() {
+    WhatsappUITheme {
+        SelectContactScreen()
     }
 }
