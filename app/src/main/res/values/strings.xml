@@ -1,3 +1,16 @@
 <resources>
-    <string name="app_name">WhatsappUI</string>
+    <string name="app_name">WhatsApp</string>
+    <string name="search_hint">Buscar</string>
+    <string name="archived">Archivados</string>
+    <string name="tab_chats">Chats</string>
+    <string name="tab_updates">Novedades</string>
+    <string name="tab_communities">Comunidades</string>
+    <string name="tab_calls">Llamadas</string>
+    <string name="filter_all">Todos</string>
+    <string name="filter_unread">No leídos</string>
+    <string name="filter_favorites">Favoritos</string>
+    <string name="filter_groups">Grupos</string>
+    <string name="add_favorite">Añadir favorito</string>
+    <string name="recent_calls">Recientes</string>
+    <string name="favorites_title">Favoritos</string>
 </resources>
