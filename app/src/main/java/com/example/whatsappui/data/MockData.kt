@@ -12,14 +12,6 @@ data class ChatPreview(
     val isRead: Boolean = true
 )
 
-data class CallPreview(
-    val name: String,
-    val time: String,
-    val isIncoming: Boolean,
-    val isMissed: Boolean,
-    val count: Int = 1
-)
-
 object MockData {
     val chats = listOf(
         ChatPreview("Mamá", "¡Hola hijo! ¿Cómo estás?", "12:45", unreadCount = 2, isPinned = true, isOutgoing = false, isRead = false),
@@ -34,14 +26,5 @@ object MockData {
         ChatPreview("Jorge Luis", "Perfecto, quedamos así entonces.", "28/09/24", unreadCount = 0, isOutgoing = true, isRead = true),
         ChatPreview("Soporte Técnico", "Su ticket ha sido resuelto.", "25/09/24", unreadCount = 0, isOutgoing = false, isRead = true),
         ChatPreview("María Elena", "¿Tienes el contacto de Juan?", "20/09/24", unreadCount = 0, isOutgoing = true, isRead = true)
-    )
-
-    val calls = listOf(
-        CallPreview("Mamá", "Hoy, 10:15", isIncoming = true, isMissed = false, count = 1),
-        CallPreview("Carlos Android", "Ayer, 18:30", isIncoming = false, isMissed = false, count = 3),
-        CallPreview("Sofía Gómez", "Ayer, 14:10", isIncoming = true, isMissed = true, count = 2),
-        CallPreview("Ana Pérez", "12/10/24, 09:00", isIncoming = false, isMissed = false, count = 1),
-        CallPreview("Pedro Gómez", "10/10/24, 21:45", isIncoming = true, isMissed = true, count = 1),
-        CallPreview("Jorge Luis", "05/10/24, 16:20", isIncoming = false, isMissed = false, count = 1)
     )
 }

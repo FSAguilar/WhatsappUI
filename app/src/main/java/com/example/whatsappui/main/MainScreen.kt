@@ -14,7 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.whatsappui.R
-import com.example.whatsappui.calls.CallsScreen
+import com.example.whatsappui.calls.CallsNavigationContainer
 import com.example.whatsappui.ui.theme.WaGreen
 import com.example.whatsappui.ui.theme.WhatsappUITheme
 
@@ -32,7 +32,7 @@ fun MainScreen(
             .background(Color.White)
     ) {
         Column(Modifier.fillMaxSize()) {
-            TopBarMain()
+            if (currentTab != 3) TopBarMain()
 
             Box(
                 modifier = Modifier
@@ -43,7 +43,7 @@ fun MainScreen(
                     0 -> ChatsTab(onChatClick)
                     1 -> PlaceholderTab(title = "Novedades")
                     2 -> PlaceholderTab(title = "Comunidades")
-                    3 -> CallsScreen()
+                    3 -> CallsNavigationContainer()
                 }
             }
 

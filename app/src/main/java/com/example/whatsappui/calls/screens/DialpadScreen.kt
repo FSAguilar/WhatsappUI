@@ -1,4 +1,4 @@
-package com.example.whatsappui.ui.calls.screens
+package com.example.whatsappui.calls.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

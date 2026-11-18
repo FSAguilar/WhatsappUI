@@ -26,5 +26,20 @@ class ExampleInstrumentedTest {
 
         composeRule.onNodeWithText("Llamadas").performClick()
         composeRule.onNodeWithText("Recientes").assertIsDisplayed()
+
+        composeRule.onNodeWithText("Programar").performClick()
+        composeRule.onNodeWithText("Crea un evento").assertIsDisplayed()
+        composeRule.onNodeWithContentDescription("Volver").performClick()
+
+        composeRule.onNodeWithText("Teclado").performClick()
+        composeRule.onNodeWithText("1").assertIsDisplayed()
+        composeRule.onNodeWithContentDescription("Volver").performClick()
+
+        composeRule.onNodeWithText("Tía Andrea Cárdenas").performClick()
+        composeRule.onNodeWithText("Info. de la llamada").assertIsDisplayed()
+        composeRule.onNodeWithContentDescription("Volver").performClick()
+
+        composeRule.onNodeWithContentDescription("Nueva llamada").performClick()
+        composeRule.onNodeWithText("Contactos").assertIsDisplayed()
     }
 }

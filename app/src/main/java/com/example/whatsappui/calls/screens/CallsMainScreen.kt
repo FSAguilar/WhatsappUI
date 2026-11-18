@@ -1,7 +1,5 @@
-package com.example.whatsappui.ui.calls.screens
+package com.example.whatsappui.calls.screens
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -48,12 +46,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.whatsappui.ui.calls.components.CallTypeIcon
-import com.example.whatsappui.ui.calls.components.CallsBottomNavigation
-import com.example.whatsappui.ui.calls.components.ContactAvatar
-import com.example.whatsappui.ui.calls.components.QuickActionButton
-import com.example.whatsappui.ui.calls.model.CallSampleData
-import com.example.whatsappui.ui.calls.model.RecentCall
+import com.example.whatsappui.calls.components.CallTypeIcon
+import com.example.whatsappui.calls.components.ContactAvatar
+import com.example.whatsappui.calls.components.QuickActionButton
+import com.example.whatsappui.calls.model.CallSampleData
+import com.example.whatsappui.calls.model.RecentCall
 import com.example.whatsappui.ui.theme.WaDimens
 import com.example.whatsappui.ui.theme.WaGreen
 import com.example.whatsappui.ui.theme.WaGreenLight
@@ -147,9 +144,6 @@ fun CallsMainScreen(
                     colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White)
                 )
             }
-        },
-        bottomBar = {
-            CallsBottomNavigation(selectedTab = 3)
         },
         floatingActionButton = {
             FloatingActionButton(

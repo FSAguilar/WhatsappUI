@@ -1,4 +1,4 @@
-package com.example.whatsappui.ui.calls
+package com.example.whatsappui.calls
 
 import android.widget.Toast
 import androidx.compose.runtime.Composable
@@ -7,13 +7,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import com.example.whatsappui.ui.calls.model.CallSampleData
-import com.example.whatsappui.ui.calls.model.RecentCall
-import com.example.whatsappui.ui.calls.screens.CallInfoScreen
-import com.example.whatsappui.ui.calls.screens.CallsMainScreen
-import com.example.whatsappui.ui.calls.screens.DialpadScreen
-import com.example.whatsappui.ui.calls.screens.ScheduleCallScreen
-import com.example.whatsappui.ui.calls.screens.SelectContactScreen
+import com.example.whatsappui.calls.model.CallSampleData
+import com.example.whatsappui.calls.model.RecentCall
+import com.example.whatsappui.calls.screens.CallInfoScreen
+import com.example.whatsappui.calls.screens.CallsMainScreen
+import com.example.whatsappui.calls.screens.DialpadScreen
+import com.example.whatsappui.calls.screens.ScheduleCallScreen
+import com.example.whatsappui.calls.screens.SelectContactScreen
 
 sealed class CallsScreenDestination {
     object Main : CallsScreenDestination()

@@ -1,4 +1,4 @@
-package com.example.whatsappui.ui.calls.model
+package com.example.whatsappui.calls.model
 
 import androidx.compose.ui.graphics.Color
 
