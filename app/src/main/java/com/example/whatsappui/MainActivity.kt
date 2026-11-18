@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.example.whatsappui.main.MainScreen
+import com.example.whatsappui.navigation.WhatsappApp
 import com.example.whatsappui.ui.theme.WhatsappUITheme
 
 class MainActivity : ComponentActivity() {
@@ -18,25 +18,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             WhatsappUITheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MainScreen(modifier = Modifier.padding(innerPadding))
+                    WhatsappApp(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-//@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    WhatsappUITheme {
-        Greeting("Android")
     }
 }

@@ -1,9 +1,5 @@
-package com.example.whatsappui
+package com.example.whatsappui.info
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,6 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.whatsappui.R
 import com.example.whatsappui.ui.theme.WhatsappUITheme
 
 private val WaGreen = Color(0xFF008069)
@@ -39,30 +36,12 @@ private val WaTextSecondary = Color(0xFF667781)
 private val WaDivider = Color(0xFFE9EDEF)
 private val WaRed = Color(0xFFD70040)
 
-class InfoActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            WhatsappUITheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    containerColor = WaBackground
-                ) { innerPadding ->
-                    PantallaInfoContacto(
-                        onBack = ::finish,
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
-        }
-    }
-}
-
 @Composable
-fun PantallaInfoContacto(
+fun InfoScreen(
+    nombre: String,
     modifier: Modifier = Modifier,
-    onBack: () -> Unit = {}
+    onBack: () -> Unit = {},
+    onCallClick: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -70,8 +49,8 @@ fun PantallaInfoContacto(
             .background(WaBackground)
             .verticalScroll(rememberScrollState())
     ) {
-        CabeceraContacto(onBack)
-        AccionesContacto()
+        CabeceraContacto(nombre, onBack)
+        AccionesContacto(onCallClick)
         SeparacionSeccion()
         FilaMultimedia()
         SeparacionSeccion()
@@ -83,13 +62,13 @@ fun PantallaInfoContacto(
         SeparacionSeccion()
         SeccionGrupos()
         SeparacionSeccion()
-        SeccionPeligro()
+        SeccionPeligro(nombre)
         Spacer(Modifier.height(32.dp))
     }
 }
 
 @Composable
-private fun CabeceraContacto(onBack: () -> Unit) {
+private fun CabeceraContacto(nombre: String, onBack: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -125,7 +104,7 @@ private fun CabeceraContacto(onBack: () -> Unit) {
 
         Image(
             painter = painterResource(R.drawable.pfp),
-            contentDescription = "Foto de perfil de María González",
+            contentDescription = "Foto de perfil de $nombre",
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(132.dp)
@@ -133,7 +112,7 @@ private fun CabeceraContacto(onBack: () -> Unit) {
         )
         Spacer(Modifier.height(14.dp))
         Text(
-            text = "María González",
+            text = nombre,
             color = WaTextPrimary,
             fontSize = 24.sp,
             fontWeight = FontWeight.Normal,
@@ -150,7 +129,7 @@ private fun CabeceraContacto(onBack: () -> Unit) {
 }
 
 @Composable
-private fun AccionesContacto() {
+private fun AccionesContacto(onCallClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -158,20 +137,20 @@ private fun AccionesContacto() {
             .padding(bottom = 18.dp),
         horizontalArrangement = Arrangement.spacedBy(28.dp, Alignment.CenterHorizontally)
     ) {
-        BotonAccion(R.drawable.call, "Voz")
-        BotonAccion(R.drawable.videocam, "Video")
+        BotonAccion(R.drawable.call, "Voz", onCallClick)
+        BotonAccion(R.drawable.videocam, "Video", onCallClick)
         BotonAccion(R.drawable.search, "Buscar")
     }
 }
 
 @Composable
-private fun BotonAccion(icono: Int, titulo: String) {
+private fun BotonAccion(icono: Int, titulo: String, onClick: () -> Unit = {}) {
     Column(
         modifier = Modifier.width(62.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OutlinedButton(
-            onClick = {},
+            onClick = onClick,
             modifier = Modifier.size(58.dp),
             shape = CircleShape,
             border = BorderStroke(1.dp, WaDivider),
@@ -352,10 +331,10 @@ private fun GrupoComun(iniciales: String, nombre: String, detalle: String) {
 }
 
 @Composable
-private fun SeccionPeligro() {
+private fun SeccionPeligro(nombre: String) {
     Column(Modifier.background(Color.White)) {
-        OpcionInfo(R.drawable.block, "Bloquear a María", peligro = true)
-        OpcionInfo(R.drawable.thumb_down, "Reportar a María", peligro = true)
+        OpcionInfo(R.drawable.block, "Bloquear a $nombre", peligro = true)
+        OpcionInfo(R.drawable.thumb_down, "Reportar a $nombre", peligro = true)
         OpcionInfo(R.drawable.block, "Vaciar chat", peligro = true)
     }
 }
@@ -429,6 +408,6 @@ private fun SeparacionSeccion() {
 @Composable
 private fun InfoContactoPreview() {
     WhatsappUITheme {
-        PantallaInfoContacto()
+        InfoScreen(nombre = "María González")
     }
 }

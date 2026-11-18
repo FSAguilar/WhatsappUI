@@ -1,9 +1,10 @@
 package com.example.whatsappui.main
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,10 +23,11 @@ import com.example.whatsappui.data.ChatPreview
 import com.example.whatsappui.ui.theme.*
 
 @Composable
-fun ChatRow(chat: ChatPreview) {
+fun ChatRow(chat: ChatPreview, onClick: (ChatPreview) -> Unit = {}) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onClick(chat) }
             .padding(horizontal = WaDimens.SpaceMd, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(WaDimens.SpaceMd)
@@ -47,10 +49,7 @@ fun ChatRow(chat: ChatPreview) {
             )
         }
 
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.Center
-        ) {
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -75,7 +74,7 @@ fun ChatRow(chat: ChatPreview) {
                     )
                 )
             }
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(Modifier.height(4.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -88,7 +87,7 @@ fun ChatRow(chat: ChatPreview) {
                 ) {
                     if (chat.isOutgoing) {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_main_double_check),
+                            painter = painterResource(R.drawable.ic_main_double_check),
                             contentDescription = null,
                             colorFilter = ColorFilter.tint(Color(0xFF53BDEB)),
                             modifier = Modifier.size(16.dp)
@@ -96,10 +95,7 @@ fun ChatRow(chat: ChatPreview) {
                     }
                     BasicText(
                         text = chat.message,
-                        style = TextStyle(
-                            color = WaTextSecondary,
-                            fontSize = 14.sp
-                        ),
+                        style = TextStyle(color = WaTextSecondary, fontSize = 14.sp),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -111,15 +107,15 @@ fun ChatRow(chat: ChatPreview) {
                 ) {
                     if (chat.isMuted) {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_main_mute),
+                            painter = painterResource(R.drawable.ic_main_mute),
                             contentDescription = null,
-                            colorFilter = ColorFilter.tint(Color(0xFF667781)),
+                            colorFilter = ColorFilter.tint(WaTextSecondary),
                             modifier = Modifier.size(16.dp)
                         )
                     }
                     if (chat.isPinned) {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_main_pin),
+                            painter = painterResource(R.drawable.ic_main_pin),
                             contentDescription = null,
                             modifier = Modifier.size(16.dp)
                         )
