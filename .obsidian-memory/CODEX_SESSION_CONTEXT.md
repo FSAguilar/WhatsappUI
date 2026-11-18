@@ -3,7 +3,7 @@
 Source: ranked Obsidian knowledge graph
 Obsidianify-Version: 0.4.11
 Obsidianify-Update-Source: https://github.com/aesopscott/obsidianify
-Generated: 2026-11-17T13:15:57.868576+00:00
+Generated: 2026-11-18T01:08:40.042886+00:00
 Project: WhatsappUI
 Task: general project session
 
@@ -13,17 +13,23 @@ This packet contains the ranked portions of the Obsidian graph that relate to th
 
 ## Ranked Memories
 
-1. Inicio [0.1268]
+1. design [0.5214]
+   - Source: Codex-Vault/WhatsappUI/session2026-11-17/design.md
+   - Selection reason: matched terms: whatsappui; nearest anchor: design (WhatsappUI/session2026-11-17/design.md) at distance 0
+   - Why it may matter: ## 2026-11-17T09:16:00-04:00 - Agent: codex - Project: WhatsappUI - Target: /home/fid/Desktop/ProyProgr3/WhatsappUI - Source: completed turn - Session Log: /home/fid/.codex/sessions/2026/11/17/rollout-2026-11-17T09-08-54-01a1e99f-ed60-7b71-9a5b-edf2d16b26b0.js
+   - Signals: proximity=0.7071, relevance=0.7071, freshness=1.0, evidence=0.75
+
+2. Inicio [0.1268]
    - Source: Codex-Vault/Inicio.md
    - Why it may matter: # Memoria de desarrollo ## Entorno - Sistema operativo: Debian 12. - Codex CLI: 0.163.0. - Gestor de instalación de Codex: pnpm. ## Objetivos - Reutilizar conocimiento entre sesiones. - Consultar proyectos mediante grafos. - Utilizar subagentes especializados.
    - Signals: freshness=0.9288, evidence=0.75
 
-2. design [0.1268]
+3. design [0.1268]
    - Source: Codex-Vault/agents/session2026-10-22/design.md
    - Why it may matter: ## 2026-10-22T00:01:17-04:00 - Agent: codex - Project: agents - Target: /home/fid/Documents/CODE/Python/VideosConIa/agents - Source: completed turn - Session Log: /home/fid/.codex/sessions/2026/10/21/rollout-2026-10-21T23-30-33-01a161a9-1616-7993-bed5-f0c3d72b
    - Signals: freshness=0.9288, evidence=0.75
 
-3. design [0.1268]
+4. design [0.1268]
    - Source: Codex-Vault/agents/session2026-10-21/design.md
    - Why it may matter: ## 2026-10-21T23:51:10-04:00 - Agent: codex - Project: agents - Target: /home/fid/Documents/CODE/Python/VideosConIa/agents - Source: completed turn - Session Log: /home/fid/.codex/sessions/2026/10/21/rollout-2026-10-21T23-30-33-01a161a9-1616-7993-bed5-f0c3d72b
    - Signals: freshness=0.9288, evidence=0.75
